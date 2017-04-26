@@ -13,7 +13,7 @@ import java.awt.Color;
 
 public class Main {
 
-	JLabel gifBackground = new JLabel("");
+	private JLabel gifBackground = new JLabel("");
 	private String basePath = new File("").getAbsolutePath(); //If in development points to Eclipse workspace example: C:\Eclipse\Workspace\Project
 	private JFrame frmHackermanPoljakExclusive;
 
@@ -39,53 +39,55 @@ public class Main {
 	
 	public Main() throws UnsupportedAudioFileException, Exception {
 		initialize();
+		
 		//Update GIF background
-		try{
-			ImageIcon image = new ImageIcon(new ImageIcon(basePath+"\\res\\hackerman.gif").getImage().getScaledInstance(800, 560, Image.SCALE_DEFAULT));
-		    gifBackground.setIcon(image);
-		} 
-		catch (Exception x){ 
-		    	System.out.println("Image could not be loaded from:"+basePath+"\\res\\hackerman.gif"+ "ERROR:"+x); 
-		    }
+			try{
+				ImageIcon image = new ImageIcon(new ImageIcon(basePath+"\\res\\hackerman.gif").getImage().getScaledInstance(800, 560, Image.SCALE_DEFAULT));
+			    gifBackground.setIcon(image);
+			} 
+			catch (Exception x){ 
+			    	System.out.println("Image could not be loaded from:"+basePath+"\\res\\hackerman.gif"+ "ERROR:"+x); 
+			    }
 		//Play music
-		try{
-		    AudioInputStream audioInputStream =
-		        AudioSystem.getAudioInputStream(
-		            this.getClass().getResource("\\res\\lostyears.wav"));
-		    Clip clip = AudioSystem.getClip();
-		    clip.open(audioInputStream);
-		    clip.start();
-		} 
-		catch(Exception x){
-			System.out.println("ERROR:"+x); 
-		}
-		
-		
-		new java.util.Timer().schedule( 
-		        new java.util.TimerTask() {
-		            @Override
-		            public void run() {
-		            	frmHackermanPoljakExclusive.dispose();
-						 Main_Decypher.newScreen();
-		            }
-		        }, 2800	//After 2.8 sec
-		);
+			try{
+			    AudioInputStream audioInputStream =
+			        AudioSystem.getAudioInputStream(
+			            this.getClass().getResource("\\res\\lostyears.wav"));
+			    Clip clip = AudioSystem.getClip();
+			    clip.open(audioInputStream);
+			    clip.start();
+			} 
+			catch(Exception x){
+				System.out.println("ERROR:"+x); 
+			}
+			
+		//Switch to other window after 2.8sec (time needed for GIF to end)	
+			new java.util.Timer().schedule( 
+			        new java.util.TimerTask() {
+			            @Override
+			            public void run() {
+			            	frmHackermanPoljakExclusive.dispose();
+							 Main_Decypher.newScreen();
+			            }
+			        }, 2800
+			);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frmHackermanPoljakExclusive = new JFrame();
-		frmHackermanPoljakExclusive.getContentPane().setBackground(Color.DARK_GRAY);
-		frmHackermanPoljakExclusive.setBackground(Color.DARK_GRAY);
-		frmHackermanPoljakExclusive.setResizable(false);
-		frmHackermanPoljakExclusive.setTitle("Hackerman Poljak Exclusive");
-		frmHackermanPoljakExclusive.setBounds(100, 100, 780, 580);
-		frmHackermanPoljakExclusive.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmHackermanPoljakExclusive.getContentPane().setLayout(null);
-		
-		gifBackground.setBounds(0, 0, 774, 562);
-		frmHackermanPoljakExclusive.getContentPane().add(gifBackground);
+		//Set up the window
+			frmHackermanPoljakExclusive = new JFrame();
+			frmHackermanPoljakExclusive.getContentPane().setBackground(Color.DARK_GRAY);
+			frmHackermanPoljakExclusive.setBackground(Color.DARK_GRAY);
+			frmHackermanPoljakExclusive.setResizable(false);
+			frmHackermanPoljakExclusive.setTitle("Hackerman Poljak Exclusive");
+			frmHackermanPoljakExclusive.setBounds(100, 100, 780, 580);
+			frmHackermanPoljakExclusive.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frmHackermanPoljakExclusive.getContentPane().setLayout(null);
+		//Add GIF to JLabel
+			gifBackground.setBounds(0, 0, 774, 562);
+			frmHackermanPoljakExclusive.getContentPane().add(gifBackground);
 	}
 }
