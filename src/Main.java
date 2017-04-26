@@ -1,6 +1,5 @@
 import java.awt.EventQueue;
 import java.awt.Image;
-import java.io.File;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -14,7 +13,6 @@ import java.awt.Color;
 public class Main {
 
 	private JLabel gifBackground = new JLabel("");
-	private String basePath = new File("").getAbsolutePath(); //If in development points to Eclipse workspace example: C:\Eclipse\Workspace\Project
 	private JFrame frmHackermanPoljakExclusive;
 
 	/**
@@ -42,23 +40,21 @@ public class Main {
 		
 		//Update GIF background
 			try{
-				ImageIcon image = new ImageIcon(new ImageIcon(basePath+"\\res\\hackerman.gif").getImage().getScaledInstance(800, 560, Image.SCALE_DEFAULT));
+				ImageIcon image = new ImageIcon(new ImageIcon( (getClass().getResource("hackerman.gif")) ).getImage().getScaledInstance(800, 560, Image.SCALE_DEFAULT));
 			    gifBackground.setIcon(image);
 			} 
 			catch (Exception x){ 
-			    	System.out.println("Image could not be loaded from:"+basePath+"\\res\\hackerman.gif"+ "ERROR:"+x); 
+			    	System.out.println("Image could not be loaded ERROR:" +x); 
 			    }
 		//Play music
 			try{
-			    AudioInputStream audioInputStream =
-			        AudioSystem.getAudioInputStream(
-			            this.getClass().getResource("\\res\\lostyears.wav"));
+			    AudioInputStream audioInputStream = AudioSystem.getAudioInputStream( getClass().getResource("lostyears.wav") );
 			    Clip clip = AudioSystem.getClip();
 			    clip.open(audioInputStream);
 			    clip.start();
 			} 
 			catch(Exception x){
-				System.out.println("ERROR:"+x); 
+				System.out.println("Music could not be loaded ERROR:"+x); 
 			}
 			
 		//Switch to other window after 2.8sec (time needed for GIF to end)	
