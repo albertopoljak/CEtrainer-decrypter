@@ -1,11 +1,9 @@
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import java.awt.BorderLayout;
 import java.awt.Font;
-
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
@@ -114,28 +112,29 @@ public class Main_Decypher {
 						byte[] raw_data = Files.readAllBytes(path);
 						int size = raw_data.length;
 						byte key = (byte) 0xCE;
-					//Decypher that file using XOR crypt
+						
+					//Decipher that file using XOR decryption
 						txtrLog.append("[INFO]-->Hack in progress!\n");
 						txtrLog.append("      --> Starting XOR decryption!\n");
-						txtrLog.append("      --> First pass!\n");
-						for (int i = 2 ; i<size ; i++){
-							raw_data[i] = (byte) (raw_data[i] ^ raw_data[i - 2]);
-						}
-						
-						txtrLog.append("      --> Second pass!\n");
-						
-						for (int i = size-2 ; i >= 0 ; i--){
-							raw_data[i] = (byte) (raw_data[i] ^ raw_data[i + 1]);
-						}
-						
-						txtrLog.append("      --> Third pass!\n");
-						for (int i = 0; i<size ; i++)
-						{
-							raw_data[i] = (byte) (raw_data[i] ^ key);
-							++key;
-						}
-						txtrLog.append("      --> XOR Decryption done!\n\n");
-					//Check if XOR succesfull
+						//First pass
+							txtrLog.append("      --> First pass!\n");
+							for (int i = 2 ; i<size ; i++){
+								raw_data[i] = (byte) (raw_data[i] ^ raw_data[i - 2]);
+							}
+						//Second pass
+							txtrLog.append("      --> Second pass!\n");
+							for (int i = size-2 ; i >= 0 ; i--){
+								raw_data[i] = (byte) (raw_data[i] ^ raw_data[i + 1]);
+							}
+						//Third pass
+							txtrLog.append("      --> Third pass!\n");
+							for (int i = 0; i<size ; i++)
+							{
+								raw_data[i] = (byte) (raw_data[i] ^ key);
+								++key;
+							}
+							txtrLog.append("      --> XOR Decryption done!\n\n");
+					//Check if XOR successful
 						txtrLog.append("[Info]--> First 5 characters of encrypted file should be CHEAT: ");
 						String prvih5 = new String(raw_data, 0, 5);
 						txtrLog.append(prvih5+"\n");
@@ -146,7 +145,7 @@ public class Main_Decypher {
 							txtrLog.append("[ERROR]--> File is not protected or is made with older/newer CheatEngine version\n");
 							return;
 						}
-					//Zlib decopression
+					//Zlib decompression
 						txtrLog.append("\n[Info]--> Starting decompression using Zlib!\n");
 					//First delete CHEAT
 						txtrLog.append("      --> Deleting string CHEAT!\n");
@@ -158,7 +157,7 @@ public class Main_Decypher {
 				        byte[] result = new byte[100000];
 				        int resultLength = decompresser.inflate(result);
 				        decompresser.end();
-				    //Convert decopressed array to string
+				    //Convert decompressed array to string
 				        txtrLog.append("      --> Converting byte array to string!\n");
 				        String outStr = new String(result, 4, resultLength-4, "UTF-8");
 			        //Save that string to file

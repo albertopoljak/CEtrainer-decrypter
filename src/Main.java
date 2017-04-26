@@ -1,7 +1,6 @@
 import java.awt.EventQueue;
 import java.awt.Image;
 import java.io.File;
-
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -15,8 +14,7 @@ import java.awt.Color;
 public class Main {
 
 	JLabel gifBackground = new JLabel("");
-	private String basePath = new File("").getAbsolutePath(); //F:\Development\eclipse-java-neon-1a-win32-x86_64\Workspace\mordor test
-	
+	private String basePath = new File("").getAbsolutePath(); //If in development points to Eclipse workspace example: C:\Eclipse\Workspace\Project
 	private JFrame frmHackermanPoljakExclusive;
 
 	/**
@@ -37,17 +35,16 @@ public class Main {
 
 	/**
 	 * Create the application.
-	 * @throws Exception 
-	 * @throws UnsupportedAudioFileException 
 	 */
+	
 	public Main() throws UnsupportedAudioFileException, Exception {
 		initialize();
-		//Update gif background
+		//Update GIF background
 		try{
 			ImageIcon image = new ImageIcon(new ImageIcon(basePath+"\\res\\hackerman.gif").getImage().getScaledInstance(800, 560, Image.SCALE_DEFAULT));
-		    System.out.println("Loading image from: "+ basePath+"\\res\\hackerman.gif");
 		    gifBackground.setIcon(image);
-			} catch (Exception x) { 
+		} 
+		catch (Exception x){ 
 		    	System.out.println("Image could not be loaded from:"+basePath+"\\res\\hackerman.gif"+ "ERROR:"+x); 
 		    }
 		//Play music
@@ -58,9 +55,8 @@ public class Main {
 		    Clip clip = AudioSystem.getClip();
 		    clip.open(audioInputStream);
 		    clip.start();
-		}
-		catch(Exception x)
-		{
+		} 
+		catch(Exception x){
 			System.out.println("ERROR:"+x); 
 		}
 		
@@ -91,7 +87,5 @@ public class Main {
 		
 		gifBackground.setBounds(0, 0, 774, 562);
 		frmHackermanPoljakExclusive.getContentPane().add(gifBackground);
-		
-		
 	}
 }
