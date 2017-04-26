@@ -165,22 +165,22 @@ public class Main_Decypher {
 							//Load file as a byte array
 								byte[] raw_data = Files.readAllBytes(path);
 								int size = raw_data.length;
-								byte key = (byte) 0xCE;
 								
 							//Decipher that file using XOR decryption
 								txtrLog.append("      --> Starting XOR decryption!\n");
-									//First pass
+									//First pass : Before-key relationship where the first byte (x) starts at 2 and the first XOR key starts at x-2
 										txtrLog.append("      --> First pass!\n");
 										for (int i = 2 ; i<size ; i++){
 											raw_data[i] = (byte) (raw_data[i] ^ raw_data[i - 2]);
 										}
-									//Second pass
+									//Second pass : After-key relationship where the first byte (x) starts at length-2 and the first XOR key starts at x+1
 										txtrLog.append("      --> Second pass!\n");
 										for (int i = size-2 ; i >= 0 ; i--){
 											raw_data[i] = (byte) (raw_data[i] ^ raw_data[i + 1]);
 										}
-									//Third pass
+									//Third pass : Static-incrementing key relationship where the key starts at 0xCE and increments each XOR
 										txtrLog.append("      --> Third pass!\n");
+										byte key = (byte) 0xCE;
 										for (int i = 0; i<size ; i++)
 										{
 											raw_data[i] = (byte) (raw_data[i] ^ key);
@@ -188,7 +188,7 @@ public class Main_Decypher {
 										}
 								txtrLog.append("      --> XOR Decryption done!\n\n");
 							
-							//Check if XOR successful
+							//Check if XOR successful : Using newer trainer files will show a 5 byte header saying 'CHEAT'. This should be skipped before attempting to decompress the buffer
 								txtrLog.append("[Info]--> First 5 characters of encrypted file should be CHEAT: ");
 								String prvih5 = new String(raw_data, 0, 5);
 								txtrLog.append(prvih5 + "\n");
