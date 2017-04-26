@@ -21,7 +21,7 @@ Usage:
 
 Resources:  
   
-	Picture: Kung Fury Hackerman\
+	Picture: Kung Fury Hackerman
 	Song: Lost Years - West Side Lane
 
 Source code author: Alberto Poljak
