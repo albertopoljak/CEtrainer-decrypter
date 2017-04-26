@@ -160,68 +160,69 @@ public class Main_Decypher {
 				@Override
 				public void mouseReleased(MouseEvent e) {
 					try{
-					Path path = Paths.get(txtC.getText());
-						//Load file as byte array
-							byte[] raw_data = Files.readAllBytes(path);
-							int size = raw_data.length;
-							byte key = (byte) 0xCE;
-							
-						//Decipher that file using XOR decryption
-							txtrLog.append("[INFO]-->Hack in progress!\n");
-							txtrLog.append("      --> Starting XOR decryption!\n");
-							//First pass
-								txtrLog.append("      --> First pass!\n");
-								for (int i = 2 ; i<size ; i++){
-									raw_data[i] = (byte) (raw_data[i] ^ raw_data[i - 2]);
-								}
-							//Second pass
-								txtrLog.append("      --> Second pass!\n");
-								for (int i = size-2 ; i >= 0 ; i--){
-									raw_data[i] = (byte) (raw_data[i] ^ raw_data[i + 1]);
-								}
-							//Third pass
-								txtrLog.append("      --> Third pass!\n");
-								for (int i = 0; i<size ; i++)
-								{
-									raw_data[i] = (byte) (raw_data[i] ^ key);
-									++key;
-								}
+						txtrLog.append("[INFO]-->Hack in progress!\n");
+						Path path = Paths.get(txtC.getText());
+							//Load file as a byte array
+								byte[] raw_data = Files.readAllBytes(path);
+								int size = raw_data.length;
+								byte key = (byte) 0xCE;
+								
+							//Decipher that file using XOR decryption
+								txtrLog.append("      --> Starting XOR decryption!\n");
+									//First pass
+										txtrLog.append("      --> First pass!\n");
+										for (int i = 2 ; i<size ; i++){
+											raw_data[i] = (byte) (raw_data[i] ^ raw_data[i - 2]);
+										}
+									//Second pass
+										txtrLog.append("      --> Second pass!\n");
+										for (int i = size-2 ; i >= 0 ; i--){
+											raw_data[i] = (byte) (raw_data[i] ^ raw_data[i + 1]);
+										}
+									//Third pass
+										txtrLog.append("      --> Third pass!\n");
+										for (int i = 0; i<size ; i++)
+										{
+											raw_data[i] = (byte) (raw_data[i] ^ key);
+											++key;
+										}
 								txtrLog.append("      --> XOR Decryption done!\n\n");
-						//Check if XOR successful
-							txtrLog.append("[Info]--> First 5 characters of encrypted file should be CHEAT: ");
-							String prvih5 = new String(raw_data, 0, 5);
-							txtrLog.append(prvih5+"\n");
-							if(prvih5.equals("CHEAT"))
-								txtrLog.append("      --> XOR encryption sucesfully decrypted!\n");
-							else{
-								txtrLog.append("[ERROR]--> XOR decryption failed!\n");
-								txtrLog.append("[ERROR]--> File is not protected or is made with older/newer CheatEngine version\n");
-								return;
-							}
-						//Zlib decompression
-							txtrLog.append("\n[Info]--> Starting decompression using Zlib!\n");
-						//First delete CHEAT
-							txtrLog.append("      --> Deleting string CHEAT!\n");
-							byte[] outputFinal = Arrays.copyOfRange(raw_data, 5, raw_data.length);
-						//Then set inflater methods
-							txtrLog.append("      --> Setting up inflater!\n");
-							Inflater decompresser = new Inflater(true); //has to be set to freaking true
-					        decompresser.setInput(outputFinal, 0, raw_data.length-5);
-					        byte[] result = new byte[100000];
-					        int resultLength = decompresser.inflate(result);
-					        decompresser.end();
-					    //Convert decompressed array to string
-					        txtrLog.append("      --> Converting byte array to string!\n");
-					        String outStr = new String(result, 4, resultLength-4, "UTF-8");
-				        //Save that string to file
-					        txtrLog.append("      --> Trying to save file poljak.xml!\n");
-					        BufferedWriter writer = null;
-					        writer = new BufferedWriter( new FileWriter("poljak.xml"));
-					        writer.write( outStr);
-					        writer.close();
-					        txtrLog.append("[END]--> File saved! It's located in the same directory as this executable!\n");
-				        System.out.println("Decompressed data:"+outStr);
-						 
+							
+							//Check if XOR successful
+								txtrLog.append("[Info]--> First 5 characters of encrypted file should be CHEAT: ");
+								String prvih5 = new String(raw_data, 0, 5);
+								txtrLog.append(prvih5 + "\n");
+								if( prvih5.equals("CHEAT") )
+									txtrLog.append("      --> XOR encryption sucesfully decrypted!\n");
+								else{
+									txtrLog.append("[ERROR]--> XOR decryption failed!\n");
+									txtrLog.append("[ERROR]--> File is not protected or is made with older/newer CheatEngine version\n");
+									return;
+								}
+							
+							//Zlib decompression
+								txtrLog.append("\n[Info]--> Starting decompression using Zlib!\n");
+								//First delete string "CHEAT" from decrypted file
+									txtrLog.append("      --> Deleting string CHEAT!\n");
+									byte[] outputFinal = Arrays.copyOfRange(raw_data, 5, raw_data.length);
+								//Then set inflater methods
+									txtrLog.append("      --> Setting up inflater!\n");
+									Inflater decompresser = new Inflater(true);
+							        decompresser.setInput(outputFinal, 0, raw_data.length-5);
+							        byte[] result = new byte[100000];	//FIX THIS ERROR BY DYNAMICALLY ALLOCATING
+							        int resultLength = decompresser.inflate(result);
+							        decompresser.end();
+							    //Convert decompressed array to string
+							        txtrLog.append("      --> Converting byte array to string!\n");
+							        String outStr = new String(result, 4, resultLength-4, "UTF-8");
+					        //Save that string to file
+						        txtrLog.append("      --> Trying to save file output.xml!\n");
+						        BufferedWriter writer = null;
+						        writer = new BufferedWriter( new FileWriter("output.xml"));
+						        writer.write( outStr);
+						        writer.close();
+						        txtrLog.append("[END]--> File saved! It's located in the same directory as this executable!\n");
+							 
 					} catch (IOException e1) {
 						txtrLog.append("\n[ERROR]-->File location wrong!\n                -->"+e1+"\n");
 					}catch (IndexOutOfBoundsException e1) {
