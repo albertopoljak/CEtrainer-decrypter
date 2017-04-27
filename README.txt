@@ -7,7 +7,7 @@ How to build/run program:
 	http://www.oracle.com/technetwork/java/javase/downloads/index.html
 	Appart from that you will need to include "swing" library into your IDE.
 	http://download.eclipse.org/windowbuilder/WB/integration/4.4/
-	"res" folder needs to be in the same folder as executable in order for music and GIF to work.
+	Resources need to be in the same folder as jar in order for music and GIF to work.
 
 Usage:
 
