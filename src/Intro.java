@@ -10,10 +10,10 @@ import javax.swing.JLabel;
 import java.awt.Color;
 
 
-public class Main {
+public class Intro {
 
-	private JLabel gifBackground = new JLabel("");
-	private JFrame frmHackermanPoljakExclusive;
+	private JLabel gifBackground;
+	private JFrame introFrame;
 
 	/**
 	 * Launch the application.
@@ -22,8 +22,8 @@ public class Main {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Main window = new Main();
-					window.frmHackermanPoljakExclusive.setVisible(true);
+					Intro introWindow = new Intro();
+					introWindow.introFrame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -34,8 +34,7 @@ public class Main {
 	/**
 	 * Create the application.
 	 */
-	
-	public Main() throws UnsupportedAudioFileException, Exception {
+	public Intro() throws UnsupportedAudioFileException, Exception {
 		initialize();
 		
 		//Update GIF background
@@ -44,7 +43,9 @@ public class Main {
 			    gifBackground.setIcon(image);
 			} 
 			catch (Exception x){ 
-			    	System.out.println("Image could not be loaded ERROR:" +x); 
+					System.out.println("Image could not be loaded ERROR:" +x);
+					MainProgram.newScreen();
+					introFrame.dispose();
 			    }
 		//Play music
 			try{
@@ -55,6 +56,8 @@ public class Main {
 			} 
 			catch(Exception x){
 				System.out.println("Music could not be loaded ERROR:"+x); 
+				MainProgram.newScreen();
+				introFrame.dispose();
 			}
 			
 		//Switch to other window after 2.8sec (time needed for GIF to end)	
@@ -62,8 +65,8 @@ public class Main {
 			        new java.util.TimerTask() {
 			            @Override
 			            public void run() {
-			            	frmHackermanPoljakExclusive.dispose();
-							 Main_Decypher.newScreen();
+			            	introFrame.dispose();
+							MainProgram.newScreen();
 			            }
 			        }, 2800
 			);
@@ -74,16 +77,17 @@ public class Main {
 	 */
 	private void initialize() {
 		//Set up the window
-			frmHackermanPoljakExclusive = new JFrame();
-			frmHackermanPoljakExclusive.getContentPane().setBackground(Color.DARK_GRAY);
-			frmHackermanPoljakExclusive.setBackground(Color.DARK_GRAY);
-			frmHackermanPoljakExclusive.setResizable(false);
-			frmHackermanPoljakExclusive.setTitle("Hackerman Poljak Exclusive");
-			frmHackermanPoljakExclusive.setBounds(100, 100, 780, 580);
-			frmHackermanPoljakExclusive.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			frmHackermanPoljakExclusive.getContentPane().setLayout(null);
-		//Add GIF to JLabel
+			introFrame = new JFrame();
+			introFrame.getContentPane().setBackground(Color.DARK_GRAY);
+			introFrame.setBackground(Color.DARK_GRAY);
+			introFrame.setResizable(false);
+			introFrame.setTitle("Intro");
+			introFrame.setBounds(100, 100, 780, 580);
+			introFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			introFrame.getContentPane().setLayout(null);
+		//Create JLabel that will hold GIF
+			gifBackground = new JLabel("");
 			gifBackground.setBounds(0, 0, 774, 562);
-			frmHackermanPoljakExclusive.getContentPane().add(gifBackground);
+			introFrame.getContentPane().add(gifBackground);
 	}
 }

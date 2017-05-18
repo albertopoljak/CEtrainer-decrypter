@@ -1,17 +1,16 @@
 How to build/run program:
-	I preffer Eclipse for building.
+	If you don't want to build you can download pre-built program from "Release".
+	If you want to build: I preffer Eclipse for building.
 	Since this is a java program you will need to have JRE installed in order to run it.
-	If you don't already have java runtime download it here:
 	http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html
-	In order to build it you will need Java SE (Be sure to install a JVM with the same bit level as Eclipse):
+	In order to build it you will need Java SE (Be sure to install a JVM with the same bit level as your IDE):
 	http://www.oracle.com/technetwork/java/javase/downloads/index.html
 	Appart from that you will need to include "swing" library into your IDE.
 	http://download.eclipse.org/windowbuilder/WB/integration/4.4/
-	Resources need to be in the same folder as jar in order for music and GIF to work.
 
 Usage:
 
-	Open the file by inputing whole path, example C:\file.cetrainer\  then click "Hack".
+	Open the file by inputing whole path, example C:\file.cetrainer  then click "Hack".
 	If the file is in the same folder as this executable then click "Get relative path" for easier input.
 	If the process works you should have readable file in .xml format at the same folder as executable named "output.xml".
 	

@@ -20,12 +20,10 @@ import java.util.Arrays;
 import java.util.zip.Inflater;
 import javax.swing.UIManager;
 
-public class Main_Decypher {
+public class MainProgram {
 
 	private JFrame frmDecypherInStyle;
-	private JTextField txtC;
-	private JTextArea txtrLog;
-	private String basePath = new File("").getAbsolutePath(); //F:\Development\eclipse-java-neon-1a-win32-x86_64\Workspace\mordor test
+	private String basePath = new File("").getAbsolutePath();
 	
 	/**
 	 * Launch new screen.
@@ -34,11 +32,13 @@ public class Main_Decypher {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Main_Decypher window = new Main_Decypher();
+					MainProgram window = new MainProgram();
 					window.frmDecypherInStyle.setVisible(true);
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+
 			}
 		});
 	}
@@ -46,7 +46,7 @@ public class Main_Decypher {
 	/**
 	 * Create screen elements.
 	 */
-	public Main_Decypher() {
+	public MainProgram() {
 		initialize();
 	}
 
@@ -58,7 +58,7 @@ public class Main_Decypher {
 			frmDecypherInStyle = new JFrame();
 			frmDecypherInStyle.getContentPane().setBackground(UIManager.getColor("Button.background"));
 			frmDecypherInStyle.setResizable(false);
-			frmDecypherInStyle.setTitle("Hackerman Poljak Exclusive");
+			frmDecypherInStyle.setTitle("Hackerman");
 			frmDecypherInStyle.setBounds(100, 100, 780, 580);
 			frmDecypherInStyle.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frmDecypherInStyle.getContentPane().setLayout(null);
@@ -73,7 +73,7 @@ public class Main_Decypher {
 			frmDecypherInStyle.getContentPane().add(txtrFileName);
 			
 		//Add JTextField for inputting file path
-			txtC = new JTextField();
+			JTextField txtC = new JTextField();
 			txtC.setText("disk:\\path\\filename.extension");
 			txtC.setToolTipText("Example: C:\\test.cetrainer");
 			txtC.setBounds(100, 15, 514, 20);
@@ -81,7 +81,7 @@ public class Main_Decypher {
 			frmDecypherInStyle.getContentPane().add(txtC);
 			
 		//Add text log in form of JTextArea
-			txtrLog = new JTextArea();
+			JTextArea txtrLog = new JTextArea();
 			txtrLog.append("Log:\n");
 			txtrLog.setLineWrap(true);
 			txtrLog.setEditable(false);
@@ -95,8 +95,8 @@ public class Main_Decypher {
 			frmDecypherInStyle.getContentPane().add(sp, BorderLayout.CENTER);
 		
 		//Add button that checks if file exists based on inputed file path
-			JButton btnProvjeri = new JButton("Check");
-			btnProvjeri.addMouseListener(new MouseAdapter() {
+			JButton btnCheck = new JButton("Check");
+			btnCheck.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
 					if(new File(txtC.getText()).isFile()){
@@ -106,8 +106,8 @@ public class Main_Decypher {
 					}
 				}
 			});
-			btnProvjeri.setBounds(624, 14, 140, 23);
-			frmDecypherInStyle.getContentPane().add(btnProvjeri);
+			btnCheck.setBounds(624, 14, 140, 23);
+			frmDecypherInStyle.getContentPane().add(btnCheck);
 			
 		//Add button that gets relative path and updates input path
 			JButton btnGetRelativePath = new JButton("Get relative path");
@@ -148,15 +148,30 @@ public class Main_Decypher {
 			btnInfo.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
-					Info.newScreen();
+					JFrame infoFrame = new JFrame();
+					infoFrame.setTitle("Info");
+					infoFrame.setBounds(100, 100, 700, 400);
+					infoFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+					infoFrame.getContentPane().setLayout(new BorderLayout(0, 0));
+					
+					JTextArea txtrTtt = new JTextArea();
+					txtrTtt.setFont(new Font("Calibri", Font.PLAIN, 16));
+					txtrTtt.setBackground(UIManager.getColor("Button.background"));
+					txtrTtt.setEditable(false);
+					txtrTtt.setLineWrap(false);
+					txtrTtt.setText("Usage:\r\n  Open the file by inputing whole path, example \"C:\\file.cetrainer\", then click \"Hack\"\r\n  If the process works you should have readable file in .xml format at the same folder\r\n  as this executable.\r\nAll file extensions are supported, only thing that matters is that the file is protected \r\n  with CheatEngine algorithm as follows:\r\n  3 way pass XOR encryption and then Zlib decompression plus string \"CHEAT\" as \r\n  file header\r\n\r\nIf the file is not protected in that way it means that it is either not a CheatEngine trainer\r\n  or it is using old protection method(maybe even some newer method).\r\n\r\nResources:\r\n    Picture: Kung Fury Hackerman\r\n    Song: Lost Years - West Side Lane\r\n\r\nProgram author: Alberto Poljak\r\n\t\t\t\t\t\t               v1.0");
+					txtrTtt.setBounds(10, 11, 674, 361);
+					infoFrame.getContentPane().add(txtrTtt);
+					
+					infoFrame.setVisible(true);	
 				}
 			});
 			btnInfo.setBounds(624, 454, 140, 27);
 			frmDecypherInStyle.getContentPane().add(btnInfo);
 					
 		//Add button that deciphers and decompresses the file
-			JButton btnHakiraj = new JButton("Hack!");
-			btnHakiraj.addMouseListener(new MouseAdapter() {
+			JButton btnHack = new JButton("Hack!");
+			btnHack.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseReleased(MouseEvent e) {
 					try{
@@ -234,7 +249,7 @@ public class Main_Decypher {
 					}
 				}
 			});
-			btnHakiraj.setBounds(624, 490, 140, 50);
-			frmDecypherInStyle.getContentPane().add(btnHakiraj);
+			btnHack.setBounds(624, 490, 140, 50);
+			frmDecypherInStyle.getContentPane().add(btnHack);
 	}
 }
