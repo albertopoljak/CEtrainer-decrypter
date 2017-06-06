@@ -1,9 +1,12 @@
-How to build/run program:
-	If you don't want to build you can download pre-built program from "Release".
-	If you want to build: I preffer Eclipse for building.
-	Since this is a java program you will need to have JRE installed in order to run it.
+Decrypt, dump and open protected .trainer or .cheatengine files as simple .xml file. 
+
+How to run program:
+	Download pre-built program from "Release" link.
+
+How to build/edit program:
+	You need to have JRE installed:.
 	http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html
-	In order to build it you will need Java SE (Be sure to install a JVM with the same bit level as your IDE):
+	And you will need Java SE:
 	http://www.oracle.com/technetwork/java/javase/downloads/index.html
 	Appart from that you will need to include "swing" library into your IDE.
 	http://download.eclipse.org/windowbuilder/WB/integration/4.4/
