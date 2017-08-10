@@ -20,7 +20,7 @@ import java.util.Arrays;
 import java.util.zip.Inflater;
 import javax.swing.UIManager;
 
-public class MainProgram {
+public class UnProtect {
 
 	private JFrame frmDecypherInStyle;
 	private String basePath = new File("").getAbsolutePath();
@@ -28,11 +28,11 @@ public class MainProgram {
 	/**
 	 * Launch new screen.
 	 */
-	public static void newScreen() {
+	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MainProgram window = new MainProgram();
+					UnProtect window = new UnProtect();
 					window.frmDecypherInStyle.setVisible(true);
 					
 				} catch (Exception e) {
@@ -46,7 +46,7 @@ public class MainProgram {
 	/**
 	 * Create screen elements.
 	 */
-	public MainProgram() {
+	public UnProtect() {
 		initialize();
 	}
 
@@ -205,9 +205,9 @@ public class MainProgram {
 							
 							//Check if XOR successful : Using newer trainer files will show a 5 byte header saying 'CHEAT'. This should be skipped before attempting to decompress the buffer
 								txtrLog.append("[Info]--> First 5 characters of encrypted file should be CHEAT: ");
-								String prvih5 = new String(raw_data, 0, 5);
-								txtrLog.append(prvih5 + "\n");
-								if( prvih5.equals("CHEAT") )
+								String first5 = new String(raw_data, 0, 5);
+								txtrLog.append(first5 + "\n");
+								if( first5.equals("CHEAT") )
 									txtrLog.append("      --> XOR encryption sucesfully decrypted!\n");
 								else{
 									txtrLog.append("[ERROR]--> XOR decryption failed!\n");
@@ -224,7 +224,7 @@ public class MainProgram {
 									txtrLog.append("      --> Setting up inflater!\n");
 									Inflater decompresser = new Inflater(true);
 							        decompresser.setInput(outputFinal, 0, raw_data.length-5);
-							        byte[] result = new byte[100000];	//FIX THIS ERROR BY DYNAMICALLY ALLOCATING
+							        byte[] result = new byte[ size * 20 ];	//Allocated memory for output. Times 20 just in case because we can't know for sure how large will decompressed file be.
 							        int resultLength = decompresser.inflate(result);
 							        decompresser.end();
 							    //Convert decompressed array to string
@@ -244,6 +244,8 @@ public class MainProgram {
 						txtrLog.append("\n[ERROR]-->File is not supported! File is too small!\n");
 					}catch (InvalidPathException e1) {
 						txtrLog.append("[ERROR]-->File does not exist!\n");
+					}catch (NegativeArraySizeException e1) {
+						txtrLog.append("\n[ERROR]-->File is too large?? Make sure you selected the right file.\n");
 					}catch (Exception e1) {
 						txtrLog.append("\n[ERROR]-->"+e1+"\n");
 					}
