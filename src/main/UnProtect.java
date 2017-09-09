@@ -1,11 +1,14 @@
+package main;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import java.awt.BorderLayout;
+import java.awt.Desktop;
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.BufferedWriter;
@@ -19,11 +22,15 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.zip.Inflater;
 import javax.swing.UIManager;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class UnProtect {
 
 	private JFrame frmDecypherInStyle;
-	private String basePath = new File("").getAbsolutePath();
+	private static String basePath;
+	private final JFileChooser fileChooser;
+	private static FileNameExtensionFilter filter;
+	private static Desktop desktop;
 	
 	/**
 	 * Launch new screen.
@@ -47,6 +54,11 @@ public class UnProtect {
 	 * Create screen elements.
 	 */
 	public UnProtect() {
+		basePath = new File("").getAbsolutePath();
+		fileChooser = new JFileChooser(basePath);
+		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		filter = new FileNameExtensionFilter("cetrainer, ct, cheatengine or trainer files", "cetrainer", "ct", "cheatengine", "trainer");
+		fileChooser.addChoosableFileFilter(filter);
 		initialize();
 	}
 
@@ -58,12 +70,11 @@ public class UnProtect {
 			frmDecypherInStyle = new JFrame();
 			frmDecypherInStyle.getContentPane().setBackground(UIManager.getColor("Button.background"));
 			frmDecypherInStyle.setResizable(false);
-			frmDecypherInStyle.setTitle("Hackerman");
+			frmDecypherInStyle.setTitle("UnProtect");
 			frmDecypherInStyle.setBounds(100, 100, 780, 580);
 			frmDecypherInStyle.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frmDecypherInStyle.getContentPane().setLayout(null);
 			
-		//Add text "File name"
 			JTextArea txtrFileName = new JTextArea();
 			txtrFileName.setBounds(10, 11, 80, 27);
 			txtrFileName.setText("File Path:");
@@ -72,15 +83,14 @@ public class UnProtect {
 			txtrFileName.setEditable(false);
 			frmDecypherInStyle.getContentPane().add(txtrFileName);
 			
-		//Add JTextField for inputting file path
 			JTextField txtC = new JTextField();
-			txtC.setText("disk:\\path\\filename.extension");
-			txtC.setToolTipText("Example: C:\\test.cetrainer");
+			txtC.setEditable(false);
+			txtC.setText("No file selected");
+			txtC.setToolTipText("Click browse to open file");
 			txtC.setBounds(100, 15, 514, 20);
 			txtC.setColumns(10);
 			frmDecypherInStyle.getContentPane().add(txtC);
 			
-		//Add text log in form of JTextArea
 			JTextArea txtrLog = new JTextArea();
 			txtrLog.append("Log:\n");
 			txtrLog.setLineWrap(true);
@@ -88,50 +98,27 @@ public class UnProtect {
 			txtrLog.setFont(new Font("Calibri", Font.PLAIN, 18));
 			txtrLog.setBounds(20, 49, 399, 482);
 			
-		//Add Scroll Pane with text log in it
 			JScrollPane sp = new JScrollPane(txtrLog);
 			sp.setLocation(14, 45);
 			sp.setSize(600, 495);
 			frmDecypherInStyle.getContentPane().add(sp, BorderLayout.CENTER);
 		
-		//Add button that checks if file exists based on inputed file path
-			JButton btnCheck = new JButton("Check");
-			btnCheck.addMouseListener(new MouseAdapter() {
+			JButton btnBrowse = new JButton("Browse");
+			btnBrowse.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
-					if(new File(txtC.getText()).isFile()){
-						txtrLog.append("[INFO]-->File exist!\n");
-					}else{
-						txtrLog.append("[ERROR]-->File does not exist!\n");
-					}
+					int returnValue = fileChooser.showOpenDialog(frmDecypherInStyle);
+
+					if (returnValue == JFileChooser.APPROVE_OPTION) {
+						File selectedFile = fileChooser.getSelectedFile();
+						txtC.setText(selectedFile.getAbsolutePath());
+					}else
+						txtrLog.append("[ERROR]--> File not selected!\n");
 				}
 			});
-			btnCheck.setBounds(624, 14, 140, 23);
-			frmDecypherInStyle.getContentPane().add(btnCheck);
+			btnBrowse.setBounds(624, 14, 140, 23);
+			frmDecypherInStyle.getContentPane().add(btnBrowse);
 			
-		//Add button that gets relative path and updates input path
-			JButton btnGetRelativePath = new JButton("Get relative path");
-			btnGetRelativePath.addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseReleased(MouseEvent e) {
-					txtC.setText(basePath);
-				}
-			});
-			btnGetRelativePath.setBounds(624, 48, 140, 23);
-			frmDecypherInStyle.getContentPane().add(btnGetRelativePath);
-			
-		//Add button that clears inputed path
-			JButton btnClearPath = new JButton("Clear Path");
-			btnClearPath.addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseReleased(MouseEvent e) {
-					txtC.setText("");
-				}
-			});
-			btnClearPath.setBounds(624, 82, 140, 23);
-			frmDecypherInStyle.getContentPane().add(btnClearPath);	
-			
-		//Add button that clears log
 			JButton btnClearLog = new JButton("Clear Log");
 			btnClearLog.addMouseListener(new MouseAdapter() {
 				@Override
@@ -140,35 +127,36 @@ public class UnProtect {
 					txtrLog.append("Log:\n");
 				}
 			});
-			btnClearLog.setBounds(624, 416, 140, 27);
+			btnClearLog.setBounds(624, 376, 140, 27);
 			frmDecypherInStyle.getContentPane().add(btnClearLog);
 		
-		//Add button that opens new window ("Info")
 			JButton btnInfo = new JButton("Info");
 			btnInfo.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
-					JFrame infoFrame = new JFrame();
-					infoFrame.setTitle("Info");
-					infoFrame.setBounds(100, 100, 700, 400);
-					infoFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-					infoFrame.getContentPane().setLayout(new BorderLayout(0, 0));
-					
-					JTextArea txtrTtt = new JTextArea();
-					txtrTtt.setFont(new Font("Calibri", Font.PLAIN, 16));
-					txtrTtt.setBackground(UIManager.getColor("Button.background"));
-					txtrTtt.setEditable(false);
-					txtrTtt.setLineWrap(false);
-					txtrTtt.setText("Usage:\r\n  Open the file by inputing whole path, example \"C:\\file.cetrainer\", then click \"Hack\"\r\n  If the process works you should have readable file in .xml format at the same folder\r\n  as this executable.\r\nAll file extensions are supported, only thing that matters is that the file is protected \r\n  with CheatEngine algorithm as follows:\r\n  3 way pass XOR encryption and then Zlib decompression plus string \"CHEAT\" as \r\n  file header\r\n\r\nIf the file is not protected in that way it means that it is either not a CheatEngine trainer\r\n  or it is using old protection method(maybe even some newer method).\r\n\r\nResources:\r\n    Picture: Kung Fury Hackerman\r\n    Song: Lost Years - West Side Lane\r\n\r\nProgram author: Alberto Poljak\r\n\t\t\t\t\t\t               v1.0");
-					txtrTtt.setBounds(10, 11, 674, 361);
-					infoFrame.getContentPane().add(txtrTtt);
-					
-					infoFrame.setVisible(true);	
+					Info.newScreen();		
 				}
 			});
-			btnInfo.setBounds(624, 454, 140, 27);
+			btnInfo.setBounds(624, 414, 140, 27);
 			frmDecypherInStyle.getContentPane().add(btnInfo);
 					
+			JButton btnOpenSaveDir = new JButton("Open save folder");
+			btnOpenSaveDir.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseReleased(MouseEvent arg0) {
+					desktop = Desktop.getDesktop();
+					File dirToOpen = null;
+						try {
+							dirToOpen = new File(basePath);
+							desktop.open(dirToOpen);
+						} catch (IllegalArgumentException | IOException iae) {
+							txtrLog.append("[ERROR]-->Can't open this directory!\n"+iae);
+						}
+				}
+			});
+			btnOpenSaveDir.setBounds(624, 452, 140, 27);
+			frmDecypherInStyle.getContentPane().add(btnOpenSaveDir);
+			
 		//Add button that deciphers and decompresses the file
 			JButton btnHack = new JButton("Hack!");
 			btnHack.addMouseListener(new MouseAdapter() {
@@ -204,7 +192,7 @@ public class UnProtect {
 								txtrLog.append("      --> XOR Decryption done!\n\n");
 							
 							//Check if XOR successful : Using newer trainer files will show a 5 byte header saying 'CHEAT'. This should be skipped before attempting to decompress the buffer
-								txtrLog.append("[Info]--> First 5 characters of encrypted file should be CHEAT: ");
+								txtrLog.append("[INFO]--> First 5 characters of encrypted file should be CHEAT: ");
 								String first5 = new String(raw_data, 0, 5);
 								txtrLog.append(first5 + "\n");
 								if( first5.equals("CHEAT") )
@@ -216,7 +204,7 @@ public class UnProtect {
 								}
 							
 							//Zlib decompression
-								txtrLog.append("\n[Info]--> Starting decompression using Zlib!\n");
+								txtrLog.append("\n[INFO]--> Starting decompression using Zlib!\n");
 								//First delete string "CHEAT" from decrypted file
 									txtrLog.append("      --> Deleting string CHEAT!\n");
 									byte[] outputFinal = Arrays.copyOfRange(raw_data, 5, raw_data.length);
@@ -241,7 +229,7 @@ public class UnProtect {
 					} catch (IOException e1) {
 						txtrLog.append("\n[ERROR]-->File location wrong!\n                -->"+e1+"\n");
 					}catch (IndexOutOfBoundsException e1) {
-						txtrLog.append("\n[ERROR]-->File is not supported! File is too small!\n");
+						txtrLog.append("\n[ERROR]-->File is too small!\n");
 					}catch (InvalidPathException e1) {
 						txtrLog.append("[ERROR]-->File does not exist!\n");
 					}catch (NegativeArraySizeException e1) {
@@ -253,5 +241,6 @@ public class UnProtect {
 			});
 			btnHack.setBounds(624, 490, 140, 50);
 			frmDecypherInStyle.getContentPane().add(btnHack);
+
 	}
 }

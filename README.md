@@ -2,27 +2,17 @@
 
 Decrypt protected cheat engine trainers ( cetrainer , cheatengine , ct or trainer files ) and open them as simple xml. 
 
-## Getting Started
-
-Fork/download/copy&paste code in any java IDE and it will work. Don't forget to include SWING library since it's used for GUI.
-
-Link for Eclipse SWING editor: http://download.eclipse.org/windowbuilder/WB/integration/4.4/ 
-
 ## Installing
 
-Download pre-built program from "Release" link.
+Download pre-built program from [Releases](https://github.com/albertopoljak/UnProtect/releases)
 
 ### Prerequisites
 
-For running app you will need JRE installed:
-
-http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html
+For running app you will need [Java Runtime Enviroment(JRE)](http://www.oracle.com/technetwork/java/javase/downloads/index.html) installed
 
 ## Usage
 
-Open the file by inputing whole path, example C:\file.cetrainer  then click "Hack".
-
-If the file is in the same folder as this executable then click "Get relative path" for easier input.
+Open the file by clicking the "Browse" button, then click "Hack".
 
 If the process works you should have readable file in .xml format at the same folder as executable named "output.xml".
 	
