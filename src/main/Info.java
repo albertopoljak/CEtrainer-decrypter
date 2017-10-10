@@ -1,5 +1,4 @@
 package main;
-
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -13,6 +12,7 @@ import javax.swing.UIManager;
 public class Info extends JFrame {
 
 	private JPanel contentPane;
+	private String n = System.getProperty("line.separator");
 
 	/**
 	 * Launch the application.
@@ -51,7 +51,16 @@ public class Info extends JFrame {
 		txtrInfo.setBackground(UIManager.getColor("Button.background"));
 		txtrInfo.setEditable(false);
 		txtrInfo.setLineWrap(false);
-		txtrInfo.setText("Usage:\r\n  Open the file by clicking the \"Browse\" button, then click \"Hack\"\r\n  If the process works you should have a readable file in .xml format in the same folder\r\n  as this executable.\r\nAll file extensions are supported, only thing that matters is that the file is protected \r\n  with CheatEngine algorithm as follows:\r\n  3 way pass XOR encryption and then Zlib decompression plus string \"CHEAT\" as file header\r\n\r\nIf the file is not protected in that way it means that it is either not a CheatEngine trainer\r\n  or it is using old protection method(maybe even some newer method).\r\n\r\n\r\nProgram author: Alberto Poljak");
+		txtrInfo.setText("Usage:"+n
+				+ "Open the file by clicking the \"Browse\" button, then click \"Hack\""+n
+				+ "If the process works you should have a readable file in .xml format in the same folder"+n
+				+ "as this executable."+n
+				+ "All file extensions are supported, only thing that matters is that the file is protected"+n
+				+ "with CheatEngine algorithm as follows:"+n
+				+ "3 way pass XOR encryption and then Zlib decompression plus string \"CHEAT\" as file header."+n+n
+				+ "If the file is not protected in that way it means that it is either not a CheatEngine trainer"+n
+				+ "or it is using old protection method(maybe even some newer method)."+n+n+n
+				+ "Program source code: https://github.com/albertopoljak/UnProtect");
 		scrollPaneInfo.setViewportView(txtrInfo);
 	}
 
