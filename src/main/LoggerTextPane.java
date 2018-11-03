@@ -19,14 +19,14 @@ public class LoggerTextPane extends JTextPane {
 	private String warningPrefix = "";
 	private String errorPrefix = "[ERROR]-->";
 	private String debugPrefix = "[DEBUG]-->";
-	private String outputSufix = System.getProperty("line.separator");
+	private String outputSuffix = System.getProperty("line.separator");
 	
 	LoggerTextPane(String paneTitleText){
 		this.paneTitleText = paneTitleText;
 	}
 	
 	public void clear(){
-		this.setText(paneTitleText + outputSufix);
+		this.setText(paneTitleText + outputSuffix);
 	}
 	
 	public void info(String text){
@@ -43,8 +43,9 @@ public class LoggerTextPane extends JTextPane {
 	
 	public void error(String text){
 		appendToTextPanel(errorPrefix + text, Color.red);
-		if(enableBeepDebugSound)
+		if(enableBeepDebugSound) {
 			Toolkit.getDefaultToolkit().beep();
+		}
 	}
 	
 	public void debug(String text){
@@ -56,10 +57,11 @@ public class LoggerTextPane extends JTextPane {
 	}
 	
 	private String getDate(){
-		if(enableDateOutput)
+		if(enableDateOutput){
 			return new SimpleDateFormat("[HH:mm:ss]   ").format(Calendar.getInstance().getTime());
-		else
+		}else{
 			return "";
+		}
 	}
 
 	private void appendToTextPanel(String message, Color color){
@@ -68,7 +70,7 @@ public class LoggerTextPane extends JTextPane {
 		StyleConstants.setForeground(style, color);
 
 		try { 
-			doc.insertString(doc.getLength(), getDate() + message + outputSufix , style); 
+			doc.insertString(doc.getLength(), getDate() + message + outputSuffix , style); 
 		}catch (BadLocationException e){
 			this.setText("Error writting log message! " + e); //clears and prints at the same time
 		}
@@ -79,6 +81,6 @@ public class LoggerTextPane extends JTextPane {
 	public void setWarningPrefix(String warningPrefix) { this.warningPrefix = warningPrefix; }
 	public void setErrorPrefix(String errorPrefix) { this.errorPrefix = errorPrefix; }
 	public void setDebugPrefix(String debugPrefix) { this.debugPrefix = debugPrefix; }
-	public void setOutputSufix(String outputSufix) { this.outputSufix = outputSufix; }
+	public void setOutputSufix(String outputSufix) { this.outputSuffix = outputSufix; }
 	
 }
