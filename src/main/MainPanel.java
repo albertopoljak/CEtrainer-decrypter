@@ -14,6 +14,7 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.InvalidPathException;
+import java.nio.file.Paths;
 import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -25,7 +26,6 @@ public class MainPanel {
 	private static String basePath;
 	private final JFileChooser fileChooser;
 	private static FileNameExtensionFilter filter;
-	private static Desktop desktop;
 	private String newLine = System.getProperty("line.separator");
 	
 	/**
@@ -103,8 +103,9 @@ public class MainPanel {
 				if (returnValue == JFileChooser.APPROVE_OPTION) {
 					File selectedFile = fileChooser.getSelectedFile();
 					txtFilePathInput.setText(selectedFile.getAbsolutePath());
-				}else
+				}else {
 					logPanel.error("File not selected!");
+				}
 			}
 		});
 		btnBrowse.setBounds(624, 14, 140, 23);
@@ -134,7 +135,7 @@ public class MainPanel {
 		btnOpenSaveDir.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
-				desktop = Desktop.getDesktop();
+				Desktop desktop = Desktop.getDesktop();
 				File dirToOpen = null;
 				try {
 					dirToOpen = new File(basePath);
@@ -162,8 +163,8 @@ public class MainPanel {
 	private void decrypt(){
 		try{
 			logPanel.info("Starting XOR decryption!");
-			XOR_Decryption xorDecryption = new XOR_Decryption(txtFilePathInput.getText());
-			xorDecryption.decryptXOR();
+			XorDecryptor xorDecryption = new XorDecryptor(txtFilePathInput.getText());
+			xorDecryption.decryptXor();
 
 			logPanel.info("XOR Decryption done!");
 			logPanel.info("Checking if file is cheat engine trainer..");
@@ -175,11 +176,11 @@ public class MainPanel {
 			}
 			
 			logPanel.info("Starting decompression using Zlib!");
-			Zlib_Decompression zlibDecompression = new Zlib_Decompression(xorDecryption.getFileByteData());
+			ZlibDecompresser zlibDecompression = new ZlibDecompresser(xorDecryption.getFileByteData());
 			zlibDecompression.inflateData();
 			
 			logPanel.info("Trying to save file output.xml!");
-			zlibDecompression.saveStringToFile("output");
+			zlibDecompression.saveInflatedDataToFile(Paths.get("output.xml"));
 			logPanel.info("File saved! It's located in the same directory as this executable!");
 
 		} catch (IOException e1) {
@@ -191,7 +192,7 @@ public class MainPanel {
 		}catch (NegativeArraySizeException e1) {
 			logPanel.error("File is too large?? Make sure you selected the right file.");
 		}catch (Exception e1) {
-			logPanel.error(e1.getMessage());
+			logPanel.error("ree"+e1.getMessage());
 		}
 	}
 
